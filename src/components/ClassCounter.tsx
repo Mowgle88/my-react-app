@@ -4,12 +4,16 @@ interface CountProps {
   count: number,
 }
 
-export class ClassCounter extends React.Component<{}, CountProps> {
+interface CountState {
+    count: number,
+  }
+
+export class ClassCounter extends React.Component<CountProps, CountState> {
 
     constructor(props: CountProps) {
         super(props);
         this.state = {
-            count: 0
+            count: props.count
         }
         this.increment = this.increment.bind(this);
         this.decrement = this.decrement.bind(this);

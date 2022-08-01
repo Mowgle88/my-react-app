@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className='App'>
-      <ClassCounter />
+      <ClassCounter count={5}/>
       <Counter stringNumber='10' />
       <Counter stringNumber='20'/>
     </div>
