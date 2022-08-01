@@ -3,7 +3,7 @@ import classes from './MyButton.module.css'
 
 interface ButtonProps {
   children: string,
-  disabled: boolean,
+  disabled?: boolean,
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 

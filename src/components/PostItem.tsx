@@ -1,9 +1,11 @@
 import React from 'react'
 import { IPost } from '../models'
+import MyButton from './UI/button/MyButton'
 
 interface PostProps {
   post: IPost,
-  number: number
+  number: number,
+  remove: (post: IPost) => void
 }
 
 export default function PostItem(props: PostProps) {
@@ -14,7 +16,7 @@ export default function PostItem(props: PostProps) {
           <div>{props.post.description}</div>
         </div>
         <div className='post__btns'>
-          <button>Delete</button>
+          <MyButton onClick={() => props.remove(props.post)}>Delete</MyButton>
         </div>
       </div>
   )
