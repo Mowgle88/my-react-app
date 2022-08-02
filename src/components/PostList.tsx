@@ -9,6 +9,13 @@ interface PostsProps {
 }
 
 export default function PostList({posts, title, remove}: PostsProps) {
+
+  if(!posts.length) {
+    return (
+      <h1 style={{textAlign: 'center'}}>Posts not found</h1>
+    )
+  }
+  
   return (
     <div>
       <h1 style={{textAlign: 'center'}}>{title}</h1>
