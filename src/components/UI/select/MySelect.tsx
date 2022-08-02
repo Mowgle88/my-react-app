@@ -11,7 +11,7 @@ interface SelectProps {
   onChange: (event: Options) => void
 }
 
-export type Options = 'title' | 'description';
+export type Options = 'title' | 'body';
 
 export default function MySelect({options, defaultValue, value, onChange}: SelectProps) {
   return (

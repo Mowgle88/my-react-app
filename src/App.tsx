@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import PostService from './API/PostService';
 import PostFilter from './components/PostFilter';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
+import Loader from './components/UI/Loader/Loader';
 import MyModal from './components/UI/MyModal/MyModal';
 import { usePosts } from './hooks/usePosts';
 import { IPost } from './models';
@@ -10,23 +13,31 @@ import './styles/App.css';
 
 function App() {
 
-  let [posts, setPosts] = useState([
-    {id: 1, title: "JavaScript", description: "multi-paradigm programming language, supports object-oriented, imperative and functional styles"},
-    {id: 2, title: "Pyton", description: "high-level general-purpose programming language with dynamic strong typing and automatic memory management"},
-    {id: 3, title: "Java", description: "a strongly typed general-purpose object-oriented programming language developed by Sun Microsystems"}
-  ]);
-
+  const [posts, setPosts] = useState<IPost[] | never[]>([]);
   const[filter, setFilter] = useState({sort: '', query: ''});
   const[modal, setModal] = useState(false);
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  const[isPostsLoading, setIsPostsLoading] = useState(false);
+
+
+  useEffect(() => {
+    fetchPosts();
+  }, [])
 
   const createPost = (newPost: IPost) => {
     setPosts([...posts, newPost])
     setModal(false)
   }
 
+  async function fetchPosts() {
+    setIsPostsLoading(true);
+    const posts = await PostService.getAll();
+    setPosts(posts);
+    setIsPostsLoading(false);
+  }
+
   const removePost = (post: IPost) => {
-    setPosts(posts.filter(p => p.id !== post.id))
+    setPosts(posts.filter(p => p.id !== post.id));
   }
 
   return (
@@ -42,7 +53,10 @@ function App() {
         filter={filter}
         setFilter={setFilter}
       />
-      <PostList remove={removePost} posts={sortedAndSearchedPosts} title="My posts"/>
+      {isPostsLoading
+        ? <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>
+        : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="My posts"/>
+      }
     </div>
   );
 }
