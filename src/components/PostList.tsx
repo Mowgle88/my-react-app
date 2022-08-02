@@ -1,6 +1,7 @@
 import React from 'react'
 import { IPost } from '../models'
 import PostItem from './PostItem'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface PostsProps {
   posts: IPost[],
@@ -19,7 +20,17 @@ export default function PostList({posts, title, remove}: PostsProps) {
   return (
     <div>
       <h1 style={{textAlign: 'center'}}>{title}</h1>
-      {posts.map((post, index) => <PostItem remove={remove} number={index + 1} post={post} key={post.id}/>)}
+      <TransitionGroup component={null}>
+        {posts.map((post, index) => 
+          <CSSTransition
+            key={post.id}
+            timeout={500}
+            classNames="post"
+          >
+            <PostItem remove={remove} number={index + 1} post={post}/>
+          </CSSTransition>
+        )}
+      </TransitionGroup>
     </div>
   )
 }
