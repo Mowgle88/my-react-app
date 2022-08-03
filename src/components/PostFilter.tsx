@@ -22,7 +22,7 @@ export default function PostFilter({filter, setFilter}: PostFilterProps) {
           defaultValue="Sorting by"
           options={[
             {value: 'title',  name: 'by title' },
-            {value: 'description',  name: 'by description' },
+            {value: 'body',  name: 'by body' },
           ]}
         />
       </div>

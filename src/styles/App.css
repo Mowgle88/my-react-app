@@ -43,3 +43,22 @@
   transform:translateX(-350px);
   transition: all 500ms ease-in;
 }
+
+.page__wrapper {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+}
+
+.page {
+  width: 40px;
+  padding: 10px;
+  border: 1px solid teal;
+  text-align: center;
+  cursor: pointer;
+}
+
+.page__current {
+  border: 2px solid orange;
+  font-weight: bold;
+}
