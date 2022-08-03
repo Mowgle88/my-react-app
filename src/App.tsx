@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { setTimeout } from 'timers/promises';
 import PostService from './API/PostService';
 import PostFilter from './components/PostFilter';
 import PostForm from './components/PostForm';
@@ -7,37 +8,55 @@ import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import Loader from './components/UI/Loader/Loader';
 import MyModal from './components/UI/MyModal/MyModal';
+import Pagination from './components/UI/pagination/Pagination';
+// import { useFetching } from './hooks/useFetching';
 import { usePosts } from './hooks/usePosts';
 import { IPost } from './models';
 import './styles/App.css';
+import { getPageCount, getPagesArray } from './utils/pages';
 
 function App() {
 
   const [posts, setPosts] = useState<IPost[] | never[]>([]);
   const[filter, setFilter] = useState({sort: '', query: ''});
   const[modal, setModal] = useState(false);
+  const[totalPages, setTotalPages] = useState(0);
+  const[limit, setLimit] = useState(5);
+  const[page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const[isPostsLoading, setIsPostsLoading] = useState(false);
 
+  // const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+  //   const posts = await PostService.getAll();
+  //   setPosts(posts);
+  // })
 
   useEffect(() => {
     fetchPosts();
-  }, [])
+  }, [page])
+
+  async function fetchPosts() {
+    setIsPostsLoading(true);
+    
+    const response = await PostService.getAll(limit, page);
+    setPosts(response.data);
+    const totalCount = response.headers['x-total-count'];
+    setTotalPages(getPageCount(totalCount, limit));
+
+    setIsPostsLoading(false);
+  }
 
   const createPost = (newPost: IPost) => {
     setPosts([...posts, newPost])
     setModal(false)
   }
 
-  async function fetchPosts() {
-    setIsPostsLoading(true);
-    const posts = await PostService.getAll();
-    setPosts(posts);
-    setIsPostsLoading(false);
-  }
-
   const removePost = (post: IPost) => {
     setPosts(posts.filter(p => p.id !== post.id));
+  }
+
+  const changePage = (page: number) => {
+    setPage(page);
   }
 
   return (
@@ -57,6 +76,7 @@ function App() {
         ? <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>
         : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="My posts"/>
       }
+      <Pagination page={page} totalPages={totalPages} changePage={changePage}/>
     </div>
   );
 }
