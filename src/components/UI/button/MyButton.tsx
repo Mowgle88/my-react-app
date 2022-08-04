@@ -6,7 +6,7 @@ interface ButtonProps {
     [className: string]: string
   },
   disabled?: boolean,
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export default function MyButton({children, ...props}: ButtonProps) {
