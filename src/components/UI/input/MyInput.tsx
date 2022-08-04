@@ -4,8 +4,8 @@ import classes from './MyInput.module.css'
 interface InputProps {
   type: string,
   placeholder: string,
-  value: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string,
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function MyInput(props: InputProps) {
