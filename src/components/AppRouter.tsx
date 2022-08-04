@@ -4,6 +4,7 @@ import About from '../pages/About'
 import Main from '../pages/Main'
 import Posts from '../pages/Posts'
 import Error from '../pages/Error';
+import PostIdPage from '../pages/PostIdPage'
 
 export default function AppRouter() {
   return (
@@ -12,6 +13,7 @@ export default function AppRouter() {
           <Route path="/" element={<Main />} />
           <Route path="/about" element={<About />} />
           <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:id" element={<PostIdPage />} />
           <Route path="/*" element={<Error />} />
         </Routes>
     </>
