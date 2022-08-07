@@ -20,6 +20,7 @@ export default function Navigation() {
         <Link className="navbar__link" to="/">Main</Link>
         <Link className="navbar__link" to="/about">About</Link>
         <Link className="navbar__link" to="/posts">Posts</Link>
+        <Link className="navbar__link" to="/endless-posts">EndlessPosts</Link>
       </span>
 
       {isAuth && 

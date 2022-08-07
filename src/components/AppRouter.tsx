@@ -8,6 +8,7 @@ import PostIdPage from '../pages/PostIdPage'
 import Login from '../pages/Login'
 import { AuthContext } from './contaxt'
 import Loader from './UI/Loader/Loader'
+import EndlessPosts from '../pages/EndlessPost'
 
 export default function AppRouter() {
 
@@ -27,6 +28,7 @@ export default function AppRouter() {
             <Route path="/about" element={<About />} />
             <Route path="/posts" element={<Posts />} />
             <Route path="/posts/:id" element={<PostIdPage />} />
+            <Route path="/endless-posts" element={<EndlessPosts />} />
             <Route path="/*" element={<Error />} />
             <Route path="/login" element={<Navigate  to="/" replace />} />
           </>
