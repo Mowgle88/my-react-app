@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import PostService from '../API/PostService';
 import PostFilter from '../components/PostFilter';
 import PostForm from '../components/PostForm';
@@ -7,38 +7,38 @@ import MyButton from '../components/UI/button/MyButton';
 import Loader from '../components/UI/Loader/Loader';
 import MyModal from '../components/UI/MyModal/MyModal';
 import Pagination from '../components/UI/pagination/Pagination';
-import MySelect from '../components/UI/select/MySelect';
+import { useObserver } from '../hooks/useObserver';
 // import { useFetching } from './hooks/useFetching';
 import { usePosts } from '../hooks/usePosts';
 import { IPost } from '../models';
 import '../styles/App.css';
 import { getPageCount } from '../utils/pages';
 
-function Posts() {
+function EndlessPosts() {
 
   const [posts, setPosts] = useState<IPost[] | never[]>([]);
   const[filter, setFilter] = useState({sort: '', query: ''});
   const[modal, setModal] = useState(false);
   const[totalPages, setTotalPages] = useState(0);
-  const[limit, setLimit] = useState(5);
+  const[limit, setLimit] = useState(10);
   const[page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const[isPostsLoading, setIsPostsLoading] = useState(false);
+  const lastElement = useRef<HTMLDivElement>();
 
-  // const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-  //   const posts = await PostService.getAll();
-  //   setPosts(posts);
-  // })
+  useObserver(lastElement as MutableRefObject<HTMLDivElement>, page < totalPages, isPostsLoading, () => {
+    setPage(page + 1);
+  }) 
 
   useEffect(() => {
     fetchPosts();
-  }, [page, limit])
+  }, [page])
 
   async function fetchPosts() {
     setIsPostsLoading(true);
     
     const response = await PostService.getAll(limit, page);
-    setPosts(response.data);
+    setPosts([...posts, ...response.data]);
     const totalCount = response.headers['x-total-count'];
     setTotalPages(getPageCount(totalCount, limit));
 
@@ -71,24 +71,14 @@ function Posts() {
         filter={filter}
         setFilter={setFilter}
       />
-      <MySelect
-        value={limit + ''}
-        onChange={value => setLimit(+value)}
-        defaultValue="Number of items per page"
-        options={[
-          {value: '5', name:'5'},
-          {value: '10', name:'10'},
-          {value: '20', name:'20'},
-          {value: '-1', name:'show all pages'},
-        ]}
-      />
-      {isPostsLoading
-        ? <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>
-        : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="My posts"/>
+      <PostList remove={removePost} posts={sortedAndSearchedPosts} title="My posts"/>
+      <div ref={lastElement as MutableRefObject<HTMLDivElement>} style={{height:"20px", background:"rgb(0 128 128 / 49%)"}}></div>
+      {isPostsLoading &&
+        <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>
       }
       <Pagination page={page} totalPages={totalPages} changePage={changePage}/>
     </div>
   );
 }
 
-export default Posts;
+export default EndlessPosts;
