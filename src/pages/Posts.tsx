@@ -7,6 +7,7 @@ import MyButton from '../components/UI/button/MyButton';
 import Loader from '../components/UI/Loader/Loader';
 import MyModal from '../components/UI/MyModal/MyModal';
 import Pagination from '../components/UI/pagination/Pagination';
+import MySelect from '../components/UI/select/MySelect';
 // import { useFetching } from './hooks/useFetching';
 import { usePosts } from '../hooks/usePosts';
 import { IPost } from '../models';
@@ -31,7 +32,7 @@ function Posts() {
 
   useEffect(() => {
     fetchPosts();
-  }, [page])
+  }, [page, limit])
 
   async function fetchPosts() {
     setIsPostsLoading(true);
@@ -69,6 +70,17 @@ function Posts() {
       <PostFilter
         filter={filter}
         setFilter={setFilter}
+      />
+      <MySelect
+        value={limit + ''}
+        onChange={value => setLimit(+value)}
+        defaultValue="Number of items per page"
+        options={[
+          {value: '5', name:'5'},
+          {value: '10', name:'10'},
+          {value: '20', name:'20'},
+          {value: '-1', name:'show all pages'},
+        ]}
       />
       {isPostsLoading
         ? <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>

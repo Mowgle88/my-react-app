@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import MyInput from './UI/input/MyInput'
-import MySelect, { Options } from './UI/select/MySelect'
+import MySelect from './UI/select/MySelect'
 
 interface PostFilterProps {
   filter: {sort: string, query: string}, 
