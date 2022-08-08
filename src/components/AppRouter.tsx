@@ -6,7 +6,7 @@ import Posts from '../pages/Posts'
 import Error from '../pages/Error';
 import PostIdPage from '../pages/PostIdPage'
 import Login from '../pages/Login'
-import { AuthContext } from './contaxt'
+import { AuthContext } from '../context'
 import Loader from './UI/Loader/Loader'
 import EndlessPosts from '../pages/EndlessPost'
 

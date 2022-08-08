@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AuthContext } from './contaxt';
+import { AuthContext } from '../context';
 import MyButton from './UI/button/MyButton'
 
 export default function Navigation() {
