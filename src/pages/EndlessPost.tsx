@@ -6,7 +6,6 @@ import PostList from '../components/PostList';
 import MyButton from '../components/UI/button/MyButton';
 import Loader from '../components/UI/Loader/Loader';
 import MyModal from '../components/UI/MyModal/MyModal';
-import Pagination from '../components/UI/pagination/Pagination';
 import { useObserver } from '../hooks/useObserver';
 // import { useFetching } from './hooks/useFetching';
 import { usePosts } from '../hooks/usePosts';
@@ -76,7 +75,6 @@ function EndlessPosts() {
       {isPostsLoading &&
         <div style={{display:"flex", justifyContent:"center", marginTop:"50px"}}><Loader /></div>
       }
-      <Pagination page={page} totalPages={totalPages} changePage={changePage}/>
     </div>
   );
 }

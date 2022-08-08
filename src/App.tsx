@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import AppRouter from './components/AppRouter';
-import { AuthContext } from './components/contaxt';
+import { AuthContext } from './context';
 
 function App() {
 
